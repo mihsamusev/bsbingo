@@ -2,17 +2,20 @@ from dataclasses import dataclass
 
 
 QUIT_COMMAND = "quit"
-PROMPT = f"put coordinate 0,0 -> 4,4 (or  '{QUIT_COMMAND}' to exit)\n"
 TICKED = "[x]"
 UNTICKED = "[ ]"
 
 
 @dataclass
 class RenderConfig:
-    padding: int = 28
+    padding: int
 
 
 WordGrid = list[list[str]]
+
+
+def get_prompt(max_row: int, max_col: int) -> str:
+    return f"put coordinate 0,0 -> {max_col - 1},{max_row - 1} (or  '{QUIT_COMMAND}' to exit)\n"
 
 
 def parse_coordinate(string: str) -> tuple[int, int]:
@@ -62,8 +65,12 @@ def update_buzzwords(buzzwords: WordGrid, command: str) -> WordGrid:
 
 def game_loop(buzzwords: WordGrid, render_config: RenderConfig) -> None:
     render(buzzwords, render_config)
+
+    max_row = len(buzzwords)
+    max_col = len(buzzwords[0])
+    prompt = get_prompt(max_row, max_col)
     while True:
-        command = input(PROMPT).strip()
+        command = input(prompt).strip()
 
         if command == QUIT_COMMAND:
             print("did you win son?")
@@ -72,7 +79,7 @@ def game_loop(buzzwords: WordGrid, render_config: RenderConfig) -> None:
             buzzwords = update_buzzwords(buzzwords, command)
             render(buzzwords, render_config)
         else:
-            print(PROMPT)
+            print(prompt)
 
 
 def read_buzzwords(file: str) -> list[str]:
@@ -84,6 +91,7 @@ def read_buzzwords(file: str) -> list[str]:
 def buzzwords_to_grid(words: list[str], grid_size: int) -> WordGrid:
     unticked = [untick(w) for w in words]
     as_grid = []
+
     for i in range(len(unticked) // grid_size):
         start = i * grid_size
         end = i * grid_size + grid_size
