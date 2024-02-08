@@ -1,0 +1,28 @@
+[project]
+name = "bsbingo"
+version = "0.1.0"
+description = "Play bs bingo with your fellow corpies!"
+authors = [
+  {name = "Mihhail Samusev", email = "ihavesaw@gmail.com" }
+]
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.scripts]
+bsbingo = "bsbingo.cli:cli"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "flake8",
+    "pytest",
+    "coverage",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = ["tests"]
