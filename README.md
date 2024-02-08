@@ -10,3 +10,5 @@ pip install git+https://github.com/mihsamusev/bsbingo
 ```bash
 bsbingo buzzwords.txt
 ```
+
+![](share/game.png)
